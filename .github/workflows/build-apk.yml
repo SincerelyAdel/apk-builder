@@ -82,6 +82,8 @@ jobs:
           echo "flutter=$fv" >> "$GITHUB_OUTPUT"
           echo "kind=$kind" >> "$GITHUB_OUTPUT"
           echo "name=${REPO#*/}" >> "$GITHUB_OUTPUT"
+          key=$(echo "${REPO#*/}" | tr '[:lower:]-' '[:upper:]_')
+          echo "key=$key" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Set up Java
@@ -131,8 +133,8 @@ jobs:
           NAME: ${{ steps.info.outputs.name }}
           # An app can have its own key: <NAME>_KEYSTORE_BASE64 and
           # <NAME>_KEYSTORE_PASSWORD (e.g. SCRY_...). Otherwise the shared one.
-          KEYSTORE_BASE64: ${{ secrets[format('{0}_KEYSTORE_BASE64', steps.info.outputs.name)] || secrets.ANDROID_KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets[format('{0}_KEYSTORE_BASE64', steps.info.outputs.name)] && secrets[format('{0}_KEYSTORE_PASSWORD', steps.info.outputs.name)] || secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEYSTORE_BASE64: ${{ secrets[format('{0}_KEYSTORE_BASE64', steps.info.outputs.key)] || secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets[format('{0}_KEYSTORE_BASE64', steps.info.outputs.key)] && secrets[format('{0}_KEYSTORE_PASSWORD', steps.info.outputs.key)] || secrets.ANDROID_KEYSTORE_PASSWORD }}
         run: |
           mkdir out
           find src -path '*/outputs/*' -name '*.apk' ! -name '*androidTest*' |
