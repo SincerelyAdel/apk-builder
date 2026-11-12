@@ -25,6 +25,10 @@ is older than the latest Flutter accepts.
    | `ANDROID_KEYSTORE_BASE64` | Your signing keystore, base64-encoded. Optional, but without it each build uses a new key and won't install over the last one. |
    | `ANDROID_KEYSTORE_PASSWORD` | The keystore's password. |
 
+   To sign one app with a key of its own, add `<NAME>_KEYSTORE_BASE64` and
+   `<NAME>_KEYSTORE_PASSWORD`, where `<NAME>` is the repo name in capitals
+   (for example `SCRY_KEYSTORE_BASE64`). Other apps keep the shared key.
+
    To make a keystore and its base64 text:
 
    ```sh
